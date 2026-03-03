@@ -1,99 +1,68 @@
 ---
-id: "007-technical"
-title: "Technical Architecture"
+id: technical-mybalidogsimport
+title: Technical Architecture & Stack
+description: An overview of the technology stack, frameworks, key packages, and integrations chosen to build and run the MyBaliDogsImport platform.
 type: doc
 subtype: core
 status: draft
 sequence: 7
-tags: [technical, architecture, stack, deployment]
+tags:
+  - architecture
+  - tech-stack
+  - firebase
+  - nuxt
+createdAt: "2023-10-27T10:00:00Z"
+updatedAt: "2023-10-27T10:00:00Z"
 ---
 
-# Technical Architecture
+This document provides a comprehensive overview of the technical architecture and technology stack for the MyBaliDogsImport platform. The choices outlined here are intended to facilitate rapid development, scalability, and maintainability.
 
-> How the product is built, deployed, and maintained. The engineer's reference document.
+### 1. Core Technology Stack
 
-## Tech Stack
+The platform will be built on a modern, serverless architecture leveraging the Google Firebase ecosystem and the Nuxt framework.
 
-| Layer | Technology | Why |
-|-------|-----------|-----|
-| Framework | Nuxt 4 | Full-stack Vue, SSR, file-based routing |
-| Database | Firestore | Real-time, serverless, scales automatically |
-| Auth | Firebase Auth | Email/password, social login, session management |
-| Hosting | Vercel | Edge deployment, preview deploys, serverless functions |
-| Storage | Vercel Blob | File uploads, images, assets |
-| Styling | UnoCSS / Tailwind | Utility-first, design token integration |
+*   **Framework: Nuxt 4 (Vue 3, TypeScript)**
+    *   **Why:** Nuxt provides a powerful, opinionated framework on top of Vue.js. Its file-based routing, server-side rendering (SSR) capabilities for public-facing pages (improving SEO for dog profiles), and auto-imports streamline development. Using TypeScript will ensure type safety, which is critical for a data-intensive application, reducing bugs and improving developer experience.
 
-## Architecture Overview
+*   **Database: Firebase Firestore**
+    *   **Why:** Firestore is a NoSQL, document-based database that integrates seamlessly with the rest of the Firebase suite. Its real-time capabilities are perfect for features like the Journey & Status Tracker and the Communication Hub, allowing for live updates without page reloads. The flexible data model is well-suited for the nested and varied data structures of our collections (see `database.md`).
 
-Describe the high-level architecture — client/server split, data flow, caching strategy.
+*   **Authentication: Firebase Authentication**
+    *   **Why:** Firebase Auth provides a secure, easy-to-implement, and fully managed authentication service. We will leverage its built-in support for Email/Password and social providers (initially Google Sign-in). It integrates directly with Firestore Security Rules, enabling robust, user-role-based data protection.
 
-### Client
+*   **Hosting & Backend Logic: Firebase Hosting & Firebase Functions**
+    *   **Why:** Firebase Hosting provides fast, secure, global CDN-backed hosting for our Nuxt application. For any backend logic that cannot be handled on the client-side (e.g., sending transactional emails, complex data aggregation, potential future API integrations), we will use Firebase Functions (written in TypeScript). This serverless approach minimizes infrastructure management and scales automatically.
 
-- Nuxt 4 SPA with SSR for public pages
-- Vue 3 Composition API throughout
-- State management via composables (not Pinia unless complex)
-- File-based routing with middleware for auth gates
+*   **File Storage: Firebase Storage**
+    *   **Why:** All user-uploaded documents (vet certificates, permits, IDs) will be securely stored in Firebase Storage. It integrates with Firebase Authentication and Firestore to allow for fine-grained security rules, ensuring that only authorized users can upload or access specific files.
 
-### Server
+### 2. Key Packages & Libraries
 
-- Nuxt server routes (server/api/)
-- Firebase Admin SDK for privileged operations
-- Server-side rendering for SEO-critical pages
-- Edge functions for API routes
+To accelerate development and provide a rich user experience, we will utilize several key npm packages:
 
-### Data Flow
+*   **UI Component Library: `@nuxt/ui`**
+    *   **Purpose:** A first-party, Tailwind CSS-based component library for Nuxt. It provides a set of beautiful, accessible, and customizable components (buttons, forms, modals, tables) out of the box, allowing us to build the UI quickly and consistently.
 
-```
-Client → Nuxt Server Routes → Firestore
-         ↕                     ↕
-      Firebase Auth         Cloud Functions (if needed)
-```
+*   **Authentication Management: `nuxt/auth` (or a similar community standard)**
+    *   **Purpose:** To simplify the integration of Firebase Authentication within the Nuxt application, managing tokens, sessions, and route protection.
 
-## API Routes
+*   **Data Tables: `vue-good-table` (or similar)**
+    *   **Purpose:** For pages like the Dog Import Cases list and Adopter Applications, we need powerful table components with built-in sorting, filtering, and pagination. This library provides these features with minimal custom code.
 
-List every API endpoint the product needs:
+*   **Visual Timelines/Steppers: `vue-step-progress` (or a custom component)**
+    *   **Purpose:** To build the interactive Journey & Status Tracker, a dedicated library or a custom-built component will be used to visualize the milestones of the import process.
 
-| Method | Path | Purpose | Auth |
-|--------|------|---------|------|
-| POST | /api/auth/login | Authenticate user | No |
-| GET | /api/[resource] | List resources | Yes |
-| POST | /api/[resource] | Create resource | Yes |
-| (continue...) | | | |
+*   **File Uploads: `vue-filepond`**
+    *   **Purpose:** Provides a superior user experience for file uploads, including drag-and-drop support, progress indicators, and image previews. It will be integrated with Firebase Storage.
 
-## Authentication
+*   **Date/Time Handling: `dayjs`**
+    *   **Purpose:** A lightweight and modern library for parsing, validating, manipulating, and displaying dates and times, which is essential for handling vaccination dates, flight schedules, and deadlines.
 
-- **Method:** Firebase Auth (email/password + Google OAuth)
-- **Session:** HTTP-only cookie with Firebase session token
-- **Middleware:** `auth.ts` middleware checks session on protected routes
-- **Token refresh:** Automatic via Firebase SDK
+### 3. API Integrations & External Services
 
-## Environment Variables
+*   **Transactional Emails: SendGrid (or Mailgun)**
+    *   **Purpose:** All automated emails (e.g., account verification, status notifications, password resets) will be sent via a dedicated transactional email service. This will be triggered from a Firebase Function to ensure reliability and deliverability.
 
-| Variable | Purpose | Required |
-|----------|---------|----------|
-| `FIREBASE_PROJECT_ID` | Firebase project | Yes |
-| `FIREBASE_CLIENT_EMAIL` | Service account | Yes |
-| `FIREBASE_PRIVATE_KEY` | Service account | Yes |
-| (continue...) | | |
-
-## Deployment
-
-- **Production:** Vercel, auto-deploy from `main` branch
-- **Preview:** Vercel preview deploys on every PR
-- **Database:** Firestore production instance
-- **CI/CD:** GitHub Actions for linting, type-checking, tests
-
-## Performance Targets
-
-- **First Contentful Paint:** < 1.5s
-- **Time to Interactive:** < 3s
-- **Lighthouse Score:** > 90 (performance, accessibility)
-- **API Response Time:** < 200ms (p95)
-
-## Security Considerations
-
-- All API routes validate input (Zod schemas)
-- Firestore security rules enforce per-document access
-- CORS configured for production domain only
-- Rate limiting on auth endpoints
-- No secrets in client bundle
+*   **Future Integrations (Post-MVP):**
+    *   **Government APIs:** We will explore direct integrations with country-specific government APIs (e.g., for pet import regulations) to automate compliance checks further.
+    *   **Google Maps API:** Could be used to visualize volunteer travel routes and potential dog transport matches.

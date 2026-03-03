@@ -1,111 +1,60 @@
 ---
-id: "006-design"
-title: "Design System"
+id: design-mybalidogsimport
+title: Design System & Vibe
+description: Defines the visual identity, color palette, typography, and overall user experience principles for the MyBaliDogsImport platform.
 type: doc
 subtype: core
 status: draft
 sequence: 6
-tags: [design, brand, colors, typography, components]
+tags:
+  - design
+  - ui
+  - ux
+createdAt: "2023-10-27T10:00:00Z"
+updatedAt: "2023-10-27T10:00:00Z"
 ---
 
-# Design System
+This document outlines the design principles and visual identity for MyBaliDogsImport. The goal is to create a user interface that is not only aesthetically pleasing but also builds trust, reduces user anxiety, and facilitates efficient task completion.
 
-> The visual identity and component language of the product. Everything a designer or developer needs to build consistent UI.
+### 1. Vibe & Experience Principles
 
-## Brand Voice
+The overall vibe of the platform should be **Efficient, Trustworthy, and Hopeful**.
 
-How does this product speak? Describe the tone, personality, and communication style:
+*   **Efficient:** The primary users (rescue admins) are busy and often stressed. The UI must be clean, uncluttered, and task-oriented. Workflows should be intuitive, minimizing clicks and cognitive load. Forms should be well-structured, and data should be easy to find and parse.
+*   **Trustworthy:** The process of international adoption involves significant emotional and financial investment. The design must project professionalism, security, and reliability. This means consistent branding, clear language, predictable interface patterns, and transparent status indicators. Users must feel confident that their data and the dog's critical journey are in safe hands.
+*   **Hopeful:** While the platform deals with serious logistics, its ultimate purpose is joyful: uniting a rescued dog with a loving family. The design should reflect this hope. This can be achieved through high-quality photography of the dogs, celebratory animations for completed milestones, and a bright, optimistic color palette.
 
-- **Tone:** (professional, casual, playful, authoritative?)
-- **Voice:** (first person, second person, third person?)
-- **Personality traits:** (3-4 adjectives that describe the brand)
-- **Do:** (examples of on-brand copy)
-- **Don't:** (examples of off-brand copy)
+### 2. Color Palette
 
-## Color System
+The color scheme is designed to be modern, clean, and accessible, using a primary color that evokes both the tropical setting of Bali and a sense of calm competence.
 
-### Primary Palette
+*   **Primary Color (`#06b6d4` - Cyan):** This will be used for primary calls-to-action, active navigation elements, links, and key highlights. It's a vibrant yet professional color that inspires confidence.
+*   **Accent Color (`#fcd34d` - Amber):** This warm, friendly color will be used for secondary actions, highlights, and informational alerts. It provides a hopeful contrast to the primary cyan.
+*   **Neutral Dark (`#1f2937` - Slate):** Used for all primary text, headings, and dark UI elements. It provides excellent readability and a modern, grounded feel.
+*   **Neutral Light (`#f9fafb` - Gray):** The primary background color for most of the application. It's a soft, off-white that is easy on the eyes and provides a clean canvas for content.
+*   **Feedback Colors:**
+    *   **Success (Green):** For success messages, 'Approved' statuses, and completed milestones.
+    *   **Warning (Orange/Amber):** For pending items, upcoming deadlines, or non-critical alerts.
+    *   **Error (Red):** For error messages, 'Rejected' statuses, and critical, attention-required items.
 
-- **Primary:** #000000 (main brand color, used for CTAs and key elements)
-- **Accent:** #000000 (complementary color for highlights and secondary actions)
+### 3. Typography
 
-### Neutral Palette
+Typography will be clean, modern, and highly legible to ensure clarity across all devices.
 
-- **Dark:** #000000 (text, headings)
-- **Medium:** #000000 (secondary text, borders)
-- **Light:** #000000 (backgrounds, cards)
-- **White:** #ffffff (page background)
+*   **Font Family: Inter:** This sans-serif typeface is chosen for its excellent readability at all sizes, making it perfect for UI design. Its clean, neutral aesthetic aligns with our 'Efficient' and 'Trustworthy' principles.
+*   **Hierarchy:**
+    *   **Headings (h1, h2, h3):** Will use a heavier weight (e.g., Bold, Semi-Bold) to establish clear visual hierarchy on pages like the Dashboard and Case Detail.
+    *   **Body Text:** Will use a regular weight for maximum readability in paragraphs and form labels.
+    *   **UI Elements:** Buttons, tabs, and labels will use a medium or semi-bold weight to ensure they are distinct and easy to read.
 
-### Semantic Colors
+### 4. Navigation & Layout
 
-- **Success:** #22c55e
-- **Warning:** #f59e0b
-- **Error:** #ef4444
-- **Info:** #3b82f6
+The application will utilize a persistent sidebar navigation pattern for authenticated users, providing consistent access to key areas of the platform.
 
-### Color Usage
-
-- Primary is used for: CTAs, links, active states, primary navigation
-- Accent is used for: secondary buttons, highlights, badges
-- Never use more than 3 colors on a single component
-
-## Typography
-
-### Font Stack
-
-- **Headings:** (font family, weights used)
-- **Body:** (font family, weights used)
-- **Mono:** (font family, for code/data)
-
-### Scale
-
-| Level | Size | Weight | Line Height | Use |
-|-------|------|--------|-------------|-----|
-| H1 | 2.5rem | 700 | 1.2 | Page titles |
-| H2 | 2rem | 600 | 1.3 | Section headers |
-| H3 | 1.5rem | 600 | 1.4 | Card titles |
-| Body | 1rem | 400 | 1.6 | Paragraphs |
-| Small | 0.875rem | 400 | 1.5 | Captions, labels |
-
-## Component Patterns
-
-### Buttons
-
-- Primary: filled with primary color, white text
-- Secondary: outlined with primary color
-- Ghost: text only, no background
-- Sizes: sm (32px), md (40px), lg (48px)
-- All buttons have minimum 44px touch target on mobile
-
-### Cards
-
-- Background: white (light mode) / dark neutral (dark mode)
-- Border radius: 12px
-- Padding: 16px (mobile), 24px (desktop)
-- Shadow: subtle on hover
-
-### Forms
-
-- Labels above inputs
-- Inline validation messages below fields
-- Input height: 44px minimum (mobile touch target)
-- Focus state: primary color ring
-
-## Layout Patterns
-
-- **Desktop:** Sidebar (240px) + main content area
-- **Tablet:** Collapsible sidebar + full-width content
-- **Mobile:** Bottom navigation (56px) + full-width content
-- **Max content width:** 1200px, centered
-
-## Spacing System
-
-Base unit: 4px. Use multiples: 4, 8, 12, 16, 24, 32, 48, 64, 96.
-
-## Accessibility
-
-- Minimum contrast ratio: 4.5:1 (AA) for body text, 3:1 for large text
-- Focus indicators on all interactive elements
-- Touch targets minimum 44x44px
-- Screen reader support for all dynamic content
-- Reduced motion support via `prefers-reduced-motion`
+*   **Layout:** A main content area with a maximum width will ensure readability on larger screens, while being fully responsive for mobile and tablet use. The layout will be based on a consistent grid system to maintain alignment and visual harmony.
+*   **Navigation Pattern:** After login, a left-hand sidebar will contain links to 'Dashboard', 'Dog Cases', 'Applications', 'Volunteers', and 'Settings'. The currently active section will be highlighted using the primary color (`#06b6d4`). This pattern provides clear context and allows for easy movement between core tasks.
+*   **Key Components:**
+    *   **Cards:** Used extensively on the Dashboard and Dog List pages to present digestible chunks of information with a photo, status, and key details.
+    *   **Tables:** Used for dense data displays like the Adopter Applications list, with robust sorting and filtering controls.
+    *   **Forms:** Will feature clear labels, helpful placeholder text, and real-time validation to guide users and prevent errors.
+    *   **Visual Timeline:** The Journey Tracker will be a prominent, graphical component on the Case Detail page, using icons and colors to clearly communicate progress.
